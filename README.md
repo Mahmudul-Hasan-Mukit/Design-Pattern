@@ -1,2 +1,2 @@
 # Design-Pattern
-All 26 design patterns will be implemented in code here
+All 23 design patterns will be implemented in code here
