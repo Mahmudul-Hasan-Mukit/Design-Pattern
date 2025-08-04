@@ -1,42 +1,141 @@
-class Burger{
-	public void createBurger() {
-		
-	}
+// ===== Abstract Products =====
+abstract class Burger {
+    public abstract void createBurger();
 }
-class BasicBurger extends Burger{
-	@Override
-	public void createBurger() {
-		System.out.println("Made with only bun and patty");
-	}
+
+abstract class Bread {
+    public abstract void prepareBread();
 }
-class StandardBurger extends Burger{
-	public void createBurger() {
-		System.out.println("Made with bun,patty and latus ");
-	}
+
+// ===== Concrete Burger Products =====
+// Normal Burgers
+class BasicBurger extends Burger {
+    @Override
+    public void createBurger() {
+        System.out.println("Basic Burger: Bun and Patty");
+    }
 }
-class premiumBurger extends Burger{
-	public void createBurger() {
-		System.out.println("Bun,latus,patty,cheese,white sause");
-	}
+
+class StandardBurger extends Burger {
+    @Override
+    public void createBurger() {
+        System.out.println("Standard Burger: Bun, Patty, and Lettuce");
+    }
 }
-class Burgerfactory{
-	public Burger prefer(String str) {
-		if(str.equals("basic")) {
-			return new BasicBurger();
-		}else if(str.equals("standard"))return new StandardBurger();
-		else if(str.equals("premium"))return new premiumBurger();
-		else return null;
-	}
+
+class PremiumBurger extends Burger {
+    @Override
+    public void createBurger() {
+        System.out.println("Premium Burger: Bun, Lettuce, Patty, Cheese, and White Sauce");
+    }
 }
+
+// Wheat Burgers
+class BasicWheatBurger extends Burger {
+    @Override
+    public void createBurger() {
+        System.out.println("Basic Wheat Burger: Wheat Bun and Patty");
+    }
+}
+
+class StandardWheatBurger extends Burger {
+    @Override
+    public void createBurger() {
+        System.out.println("Standard Wheat Burger: Wheat Bun, Patty, and Lettuce");
+    }
+}
+
+class PremiumWheatBurger extends Burger {
+    @Override
+    public void createBurger() {
+        System.out.println("Premium Wheat Burger: Wheat Bun, Lettuce, Patty, Cheese, and White Sauce");
+    }
+}
+
+// ===== Concrete Bread Products =====
+class NormalBread extends Bread {
+    @Override
+    public void prepareBread() {
+        System.out.println("Preparing Normal Bread");
+    }
+}
+
+class WheatBread extends Bread {
+    @Override
+    public void prepareBread() {
+        System.out.println("Preparing Wheat Bread");
+    }
+}
+
+// ===== Abstract Factory =====
+abstract class BurgerFactory {
+    public abstract Burger createBurger(String type);
+    public abstract Bread createBread();
+}
+
+// ===== Concrete Factories =====
+class MukitBurgerFactory extends BurgerFactory {
+    @Override
+    public Burger createBurger(String type) {
+        switch (type.toLowerCase()) {
+            case "basic":
+                return new BasicBurger();
+            case "standard":
+                return new StandardBurger();
+            case "premium":
+                return new PremiumBurger();
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public Bread createBread() {
+        return new NormalBread();
+    }
+}
+
+class MuhsinBurgerFactory extends BurgerFactory {
+    @Override
+    public Burger createBurger(String type) {
+        switch (type.toLowerCase()) {
+            case "basic":
+                return new BasicWheatBurger();
+            case "standard":
+                return new StandardWheatBurger();
+            case "premium":
+                return new PremiumWheatBurger();
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public Bread createBread() {
+        return new WheatBread();
+    }
+}
+
+// ===== Client Code =====
 public class FactoryDesignPattern {
+    public static void main(String[] args) {
+        String type = "premium";
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		String type="premium";
-		Burgerfactory bf=new Burgerfactory();
-		Burger burger=bf.prefer(type);
-		burger.createBurger();
+        BurgerFactory mukitFactory = new MukitBurgerFactory();
+        BurgerFactory muhsinFactory = new MuhsinBurgerFactory();
 
-	}
+        System.out.println("Mukit's Combo:");
+        Burger mukitBurger = mukitFactory.createBurger(type);
+        Bread mukitBread = mukitFactory.createBread();
+        mukitBread.prepareBread();
+        mukitBurger.createBurger();
 
+        System.out.println();
+
+        System.out.println("Muhsin's Combo:");
+        Burger muhsinBurger = muhsinFactory.createBurger(type);
+        Bread muhsinBread = muhsinFactory.createBread();
+        muhsinBread.prepareBread();
+        muhsinBurger.createBurger();
+    }
 }
